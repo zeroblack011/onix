@@ -2,12 +2,43 @@
 
 ---
 
-## 🚀 MÉTODO MAIS RÁPIDO (Recomendado)
+## 💻 ESCOLHA SEU SISTEMA OPERACIONAL
 
-### Execute APENAS este comando:
+### 🪟 **WINDOWS** (Você está aqui!)
+
+```cmd
+deploy-setup.bat
+```
+
+Depois:
+```cmd
+deploy-cloudflare.bat
+```
+
+**📚 Guia completo Windows**: [DEPLOY-WINDOWS.md](DEPLOY-WINDOWS.md)
+
+---
+
+### 🐧 **LINUX / MAC**
 
 ```bash
 ./deploy-setup.sh
+```
+
+Depois:
+```bash
+./deploy-cloudflare.sh
+```
+
+---
+
+## 🚀 MÉTODO MAIS RÁPIDO
+
+### Windows (CMD ou PowerShell):
+
+**Passo 1:**
+```cmd
+deploy-setup.bat
 ```
 
 **O que isso faz:**
@@ -21,10 +52,9 @@
 
 ---
 
-Depois execute:
-
-```bash
-./deploy-cloudflare.sh
+**Passo 2:**
+```cmd
+deploy-cloudflare.bat
 ```
 
 **O que isso faz:**
@@ -36,6 +66,15 @@ Depois execute:
 6. ✅ Deploy final
 
 **Tempo**: ~3 minutos
+
+---
+
+### Linux/Mac:
+
+```bash
+./deploy-setup.sh
+./deploy-cloudflare.sh
+```
 
 ---
 
@@ -58,79 +97,93 @@ https://business-automation.pages.dev
 4. Pronto!
 
 **Já tem conta?**
-- Execute `./deploy-setup.sh` e faça login quando pedir
+- Execute `deploy-setup.bat` (Windows) ou `./deploy-setup.sh` (Linux/Mac)
+- Faça login quando pedir
 
 ---
 
-## ⚠️ SE DER ERRO
+## ⚠️ PROBLEMAS COMUNS
 
-### Erro: "permission denied"
+### Windows: "não é reconhecido como um comando"
+
+**Você precisa estar na pasta correta do projeto!**
+
+```cmd
+cd C:\Users\SeuUsuario\Downloads\onix
+deploy-setup.bat
+```
+
+### Windows: "Node.js não instalado"
+
+1. Baixe: https://nodejs.org/
+2. Instale (versão LTS)
+3. **Feche e abra o CMD novamente**
+4. Teste: `node -v`
+
+### Linux/Mac: "permission denied"
 
 ```bash
 chmod +x deploy-setup.sh deploy-cloudflare.sh
 ./deploy-setup.sh
 ```
 
-### Erro: "wrangler not found"
-
-```bash
-npm install -g wrangler
-```
-
-### Erro: "not authenticated"
-
-```bash
-wrangler login
-```
-
 ### Qualquer outro erro
 
-Leia: `DEPLOY-RAPIDO.md` (passo a passo manual)
+**Windows**: Leia [DEPLOY-WINDOWS.md](DEPLOY-WINDOWS.md)
+
+**Linux/Mac**: Leia `DEPLOY-RAPIDO.md`
 
 ---
 
 ## 🎯 RESUMO VISUAL
 
+### Windows:
 ```
-┌─────────────────────────────────────────┐
-│  1. ./deploy-setup.sh                   │
-│     ↓                                    │
-│     Login no Cloudflare (navegador)     │
-│     ↓                                    │
-│     Arquivos preparados ✅              │
-│                                          │
-│  2. ./deploy-cloudflare.sh              │
-│     ↓                                    │
-│     Criar recursos (D1, KV, R2)         │
-│     ↓                                    │
-│     Configurar secrets                  │
-│     ↓                                    │
-│     Build e Deploy ✅                   │
-│                                          │
-│  3. PRONTO! 🎉                          │
-│     https://business-automation.pages.dev│
-└─────────────────────────────────────────┘
+C:\projeto\onix>
+
+1. deploy-setup.bat
+   ↓
+   Login no Cloudflare (navegador)
+   ↓
+   Arquivos preparados ✅
+
+2. deploy-cloudflare.bat
+   ↓
+   Criar recursos (D1, KV, R2)
+   ↓
+   Configurar secrets
+   ↓
+   Build e Deploy ✅
+
+3. PRONTO! 🎉
+   https://business-automation.pages.dev
+```
+
+### Linux/Mac:
+```
+$ ./deploy-setup.sh
+$ ./deploy-cloudflare.sh
+✅ https://business-automation.pages.dev
 ```
 
 ---
 
 ## 💡 DICAS
 
-### O que você VAI precisar saber/ter:
+### O que você VAI precisar:
 
 1. **JWT_SECRET** (senha para tokens)
-   - O script vai gerar uma automaticamente
-   - Ou use: `openssl rand -base64 32`
+   - O script vai pedir
+   - Pode deixar ele gerar automaticamente
 
 2. **Credenciais Gmail** (OPCIONAL - só se quiser emails)
    - Client ID, Secret, Refresh Token
-   - Pode pular e configurar depois
+   - **Pode pular** e configurar depois
 
 3. **Outras APIs** (OPCIONAL)
    - Asaas (pagamentos)
    - PayPal (pagamentos internacionais)
-   - Cloudinary (imagens)
-   - Pode pular tudo e configurar depois
+   - **Pode pular tudo** e configurar depois
 
 ### O que NÃO precisa agora:
 
@@ -141,28 +194,54 @@ Leia: `DEPLOY-RAPIDO.md` (passo a passo manual)
 
 ---
 
-## 📚 MAIS INFORMAÇÕES
+## 📚 GUIAS DISPONÍVEIS
 
-- **Guia Rápido**: `DEPLOY-RAPIDO.md` (10 min)
-- **Guia Completo**: `DEPLOY-CLOUDFLARE-WORKERS.md` (30 min)
-- **Troubleshooting**: `DEPLOY-RAPIDO.md` → Seção "Problemas Comuns"
+- 🪟 **Windows**: [DEPLOY-WINDOWS.md](DEPLOY-WINDOWS.md) - Guia completo para Windows
+- 🚀 **Rápido**: [DEPLOY-RAPIDO.md](DEPLOY-RAPIDO.md) - Guia rápido (10 min)
+- 📖 **Completo**: [DEPLOY-CLOUDFLARE-WORKERS.md](DEPLOY-CLOUDFLARE-WORKERS.md) - Documentação técnica (30 min)
 
 ---
 
 ## 🎬 VAMOS LÁ!
 
-Cole no terminal:
+### No Windows:
+
+1. Abra o **Prompt de Comando** (CMD) ou **PowerShell**
+2. Navegue para a pasta do projeto:
+   ```cmd
+   cd C:\Users\SeuUsuario\Downloads\onix
+   ```
+3. Execute:
+   ```cmd
+   deploy-setup.bat
+   ```
+4. Siga as instruções na tela! 🚀
+
+### No Linux/Mac:
 
 ```bash
 ./deploy-setup.sh
 ```
 
-Pressione ENTER e siga as instruções! 🚀
+---
+
+## 🆘 AJUDA RÁPIDA
+
+| Problema | Solução |
+|----------|---------|
+| Windows: "não reconhecido" | Use `cd` para ir até a pasta do projeto |
+| "Node.js não instalado" | Baixe em https://nodejs.org/ |
+| "permission denied" (Linux) | Execute `chmod +x deploy-setup.sh` |
+| Scripts não funcionam | Leia o guia do seu SO (Windows/Linux) |
 
 ---
 
-**Dúvidas?** Leia `DEPLOY-RAPIDO.md`
+**Dúvidas?**
+- 🪟 Windows: [DEPLOY-WINDOWS.md](DEPLOY-WINDOWS.md)
+- 🐧 Linux/Mac: [DEPLOY-RAPIDO.md](DEPLOY-RAPIDO.md)
 
-**Quer fazer manual?** Leia `DEPLOY-RAPIDO.md` → "OPÇÃO 2: MANUAL"
+**Problemas?**
+- Seção "Problemas Comuns" nos guias acima
 
-**Problemas?** Leia `DEPLOY-RAPIDO.md` → "PROBLEMAS COMUNS"
+**Quer fazer manual?**
+- Todos os guias têm opção "MANUAL"
