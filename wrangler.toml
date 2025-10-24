@@ -1,0 +1,145 @@
+name = "global-business-automation"
+compatibility_date = "2024-01-01"
+workers_dev = true
+
+# Next.js on Cloudflare Pages (recomendado para Next.js 14)
+# Documentação: https://developers.cloudflare.com/pages/framework-guides/nextjs/
+
+# ⚠️ IMPORTANTE: Este projeto usa Next.js App Router
+# Deploy via Cloudflare Pages com @cloudflare/next-on-pages
+# NÃO é um Worker tradicional, mas sim Next.js adaptado para Workers
+
+# Para deploy:
+# 1. npm install -D @cloudflare/next-on-pages
+# 2. npx @cloudflare/next-on-pages
+# 3. wrangler pages deploy .vercel/output/static
+
+# ===== BINDINGS =====
+
+# Database - Cloudflare D1 (SQLite serverless)
+[[d1_databases]]
+binding = "DB"
+database_name = "business_automation_db"
+database_id = "CRIAR_COM_WRANGLER_D1_CREATE"
+# Criar: wrangler d1 create business_automation_db
+# Executar migrations: wrangler d1 execute business_automation_db --file=./schema.sql
+
+# Cache - Cloudflare KV (Key-Value store)
+[[kv_namespaces]]
+binding = "CACHE_KV"
+id = "CRIAR_COM_WRANGLER_KV_CREATE"
+preview_id = "CRIAR_PREVIEW_KV"
+# Criar: wrangler kv:namespace create "CACHE_KV"
+# Criar preview: wrangler kv:namespace create "CACHE_KV" --preview
+
+# File Storage - Cloudflare R2 (S3-compatible)
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "business-automation-uploads"
+preview_bucket_name = "business-automation-uploads-preview"
+# Criar: wrangler r2 bucket create business-automation-uploads
+
+# ===== VARIÁVEIS DE AMBIENTE =====
+
+[vars]
+ENVIRONMENT = "production"
+NODE_ENV = "production"
+NEXT_PUBLIC_APP_NAME = "Global Business Automation Suite"
+NEXT_PUBLIC_APP_URL = "https://seu-dominio.pages.dev"
+
+# ===== SECRETS (usar wrangler secret put) =====
+# Nunca commitar secrets! Usar CLI:
+#
+# wrangler secret put JWT_SECRET
+# wrangler secret put GMAIL_CLIENT_ID
+# wrangler secret put GMAIL_CLIENT_SECRET
+# wrangler secret put GMAIL_REFRESH_TOKEN
+# wrangler secret put GMAIL_FROM_EMAIL
+# wrangler secret put ASAAS_API_KEY
+# wrangler secret put ASAAS_API_URL
+# wrangler secret put PAYPAL_CLIENT_ID
+# wrangler secret put PAYPAL_CLIENT_SECRET
+# wrangler secret put PAYPAL_MODE
+# wrangler secret put CLOUDINARY_CLOUD_NAME
+# wrangler secret put CLOUDINARY_API_KEY
+# wrangler secret put CLOUDINARY_API_SECRET
+# wrangler secret put HUGGING_FACE_API_KEY
+# wrangler secret put INTERCOM_ACCESS_TOKEN
+
+# ===== LIMITES E CONFIGURAÇÕES =====
+
+# Workers Paid Plan Limits:
+# - 30s CPU time limit (vs 10ms on free)
+# - 128 MB memory
+# - 1 MB request body (pode aumentar até 500 MB)
+# - Unlimited requests
+
+# Para produção, recomendo Workers Paid ($5/month):
+# account_id = "seu-account-id"
+# workers_dev = false
+# route = "seu-dominio.com/*"
+# zone_id = "seu-zone-id"
+
+# ===== BUILD CONFIGURATION =====
+
+[build]
+command = "npm run build"
+
+# Next.js on Pages não usa [build] tradicional
+# O build é feito automaticamente pelo Pages
+
+# ===== OBSERVABILITY =====
+
+# Logpush (opcional, Paid plan)
+# [logpush]
+# enabled = true
+
+# Tail Workers (debugging)
+# wrangler tail
+
+# ===== DEVELOPMENT =====
+
+# Para desenvolvimento local:
+# npx wrangler pages dev .vercel/output/static --binding DB=xxx --kv CACHE_KV=xxx --r2 R2_BUCKET=xxx
+
+# ===== MIGRATIONS =====
+
+# Executar migrations do D1:
+# wrangler d1 execute business_automation_db --file=./schema.sql
+
+# Ver dados:
+# wrangler d1 execute business_automation_db --command="SELECT * FROM users LIMIT 10"
+
+# ===== NOTAS IMPORTANTES =====
+
+# 1. Next.js 14 App Router é suportado via @cloudflare/next-on-pages
+# 2. Todas as rotas API viram Workers automaticamente
+# 3. Server Components funcionam normalmente
+# 4. Middleware funciona com adaptações
+# 5. Edge Runtime é obrigatório (já configurado)
+
+# 6. LIMITAÇÕES:
+#    - Sem Node.js APIs (fs, path, etc)
+#    - Sem better-sqlite3 (usar D1)
+#    - Sem googleapis (usar fetch)
+#    - Sem bcrypt nativo (usar @cloudflare/workers-bcrypt ou Web Crypto)
+#    - Cache em memória não persiste (usar KV)
+
+# 7. COMPATIBILIDADE:
+#    ✅ React 18
+#    ✅ Next.js 14 App Router
+#    ✅ TypeScript
+#    ✅ Tailwind CSS
+#    ✅ Radix UI
+#    ✅ Drizzle ORM (com D1 adapter)
+#    ✅ Zod
+#    ✅ JWT (com jose)
+#    ✅ Fetch API
+#    ✅ Web Crypto API
+
+# 8. CUSTO ESTIMADO (Paid Plan):
+#    - Workers: $5/month
+#    - D1: $5/month (10 GB)
+#    - KV: $5/month (1 GB)
+#    - R2: $0.015/GB stored
+#    Total: ~$15-20/month para começar
